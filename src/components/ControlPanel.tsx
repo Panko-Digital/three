@@ -425,7 +425,7 @@ export function ControlPanel({
                     ))}
                   </select>
 
-                  <h4>Wall Opacity</h4>
+                  <h4 style={{ marginTop: "1em" }}>Wall Opacity</h4>
                   <label>
                     {Math.round(roomConfig.wallOpacity * 100)}%
                     <input

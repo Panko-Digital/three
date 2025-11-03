@@ -32,7 +32,7 @@ function App() {
   const [selectedItemType, setSelectedItemType] = useState<ItemType | null>(
     null
   );
-  const [cameraView, setCameraView] = useState<CameraViewType>("isometric");
+  const [cameraView, setCameraView] = useState<CameraViewType>("free");
   const [snapToGrid, setSnapToGrid] = useState(true);
   const [gridSize] = useState(0.1); // 10cm grid
 
