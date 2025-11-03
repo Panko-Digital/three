@@ -3,7 +3,7 @@ import { OrbitControls, Environment } from "@react-three/drei";
 import { Cabinet } from "./Cabinet";
 import { Room } from "./Room";
 import type { CabinetConfig, CameraViewType, RoomConfig } from "../types";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 interface KitchenSceneProps {
@@ -41,6 +41,7 @@ function Scene({
   roomConfig,
 }: KitchenSceneProps) {
   const controlsRef = useRef<OrbitControlsImpl>(null);
+  const [isDraggingCabinet, setIsDraggingCabinet] = useState(false);
 
   // Keyboard controls for moving selected cabinet
   useEffect(() => {
@@ -130,6 +131,7 @@ function Scene({
           isSelected={cabinet.id === selectedCabinetId}
           onSelect={() => onSelectCabinet(cabinet.id)}
           onPositionChange={onPositionChange}
+          onDragStateChange={setIsDraggingCabinet}
           snapToGrid={snapToGrid}
           gridSize={gridSize}
         />
@@ -141,7 +143,7 @@ function Scene({
         makeDefault
         enableDamping
         dampingFactor={0.05}
-        enabled={cameraView === "free"}
+        enabled={cameraView === "free" && !isDraggingCabinet}
       />
     </>
   );

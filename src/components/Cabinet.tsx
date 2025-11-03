@@ -9,6 +9,7 @@ interface CabinetProps {
   isSelected: boolean;
   onSelect: () => void;
   onPositionChange: (id: string, position: [number, number, number]) => void;
+  onDragStateChange?: (isDragging: boolean) => void;
   snapToGrid: boolean;
   gridSize: number;
 }
@@ -17,6 +18,7 @@ export function Cabinet({
   isSelected,
   onSelect,
   onPositionChange,
+  onDragStateChange,
   snapToGrid,
   gridSize,
 }: CabinetProps) {
@@ -43,6 +45,7 @@ export function Cabinet({
       isDragging.current = true;
       dragPlaneY.current = config.position[1];
       gl.domElement.style.cursor = "move";
+      onDragStateChange?.(true); // Notify that dragging started
     };
 
     const handlePointerMove = (event: PointerEvent) => {
@@ -77,6 +80,7 @@ export function Cabinet({
       isDragging.current = false;
       hasCabinetBeenClicked.current = false;
       gl.domElement.style.cursor = "auto";
+      onDragStateChange?.(false); // Notify that dragging stopped
     };
 
     const domElement = gl.domElement;
@@ -99,6 +103,7 @@ export function Cabinet({
     gl,
     snapToGridValue,
     onPositionChange,
+    onDragStateChange,
   ]);
 
   const {
