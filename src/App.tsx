@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { KitchenScene } from "./components/KitchenScene";
 import { ControlPanel } from "./components/ControlPanel";
+import { NavBar } from "./components/NavBar";
 import type { CabinetConfig, CameraViewType, RoomConfig } from "./types";
 import {
   DEFAULT_MATERIALS,
@@ -38,6 +39,7 @@ function App() {
     const newCabinet: CabinetConfig = {
       id: `cabinet-${Date.now()}`,
       position: [cabinets.length * 0.8, 0, 0],
+      rotation: 0,
       width: 0.6,
       height: 0.9,
       depth: 0.6,
@@ -71,6 +73,27 @@ function App() {
     }
   };
 
+  const handleDuplicateCabinet = (id: string) => {
+    const cabinetToDuplicate = cabinets.find((c) => c.id === id);
+    if (!cabinetToDuplicate) return;
+
+    // Calculate new position - place it to the right of the original cabinet
+    const [x, y, z] = cabinetToDuplicate.position;
+    const offset = cabinetToDuplicate.width + 0.05; // 5cm gap
+
+    // Place duplicate to the right (flush against the original with small gap)
+    const newX = x + offset;
+
+    const newCabinet: CabinetConfig = {
+      ...cabinetToDuplicate,
+      id: `cabinet-${Date.now()}`,
+      position: [newX, y, z],
+    };
+
+    setCabinets([...cabinets, newCabinet]);
+    setSelectedCabinetId(newCabinet.id);
+  };
+
   const handlePositionChange = (
     id: string,
     position: [number, number, number]
@@ -87,6 +110,7 @@ function App() {
 
   return (
     <div className="app-container">
+      <NavBar cameraView={cameraView} onCameraViewChange={setCameraView} />
       <KitchenScene
         cabinets={cabinets}
         selectedCabinetId={selectedCabinetId}
@@ -98,12 +122,13 @@ function App() {
         roomConfig={roomConfig}
       />
       <ControlPanel
+        cabinets={cabinets}
         selectedCabinet={selectedCabinet}
         onAddCabinet={handleAddCabinet}
         onUpdateCabinet={handleUpdateCabinet}
         onDeleteCabinet={handleDeleteCabinet}
-        cameraView={cameraView}
-        onCameraViewChange={setCameraView}
+        onDuplicateCabinet={handleDuplicateCabinet}
+        onSelectCabinet={setSelectedCabinetId}
         snapToGrid={snapToGrid}
         onSnapToGridChange={setSnapToGrid}
         gridSize={gridSize}

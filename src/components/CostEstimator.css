@@ -1,0 +1,209 @@
+.cost-estimator {
+  background: #1e1e1e;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.cost-estimator h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: #e0e0e0;
+}
+
+.cost-estimator h4 {
+  margin: 1rem 0 0.5rem 0;
+  font-size: 0.95rem;
+  color: #e0e0e0;
+  font-weight: 600;
+}
+
+/* Summary Section */
+.cost-summary {
+  background: linear-gradient(135deg, #2a5c2a 0%, #1a4d1a 100%);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border: 1px solid #00ff00;
+}
+
+.cost-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cost-summary-row.total .cost-label {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.cost-summary-row.total .cost-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #00ff00;
+}
+
+.cost-summary-meta {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #ccc;
+  text-align: center;
+}
+
+/* Selected Cabinet Cost Breakdown */
+.selected-cabinet-cost {
+  background: #2a2a2a;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border: 2px solid #00ff00;
+}
+
+.cost-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cost-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.cost-item.total {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #00ff00;
+  margin-top: 0.5rem;
+}
+
+.cost-item-label {
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.cost-item-value {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.cost-item.total .cost-item-value {
+  color: #00ff00;
+  font-size: 1.2rem;
+}
+
+.cost-item-detail {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: -0.25rem;
+  margin-bottom: 0.25rem;
+  padding-left: 0;
+}
+
+.multiplier-note {
+  color: #ff9800;
+  font-style: italic;
+}
+
+.cost-divider {
+  height: 1px;
+  background: #444;
+  margin: 0.5rem 0;
+}
+
+/* All Cabinets List */
+.all-cabinets-cost {
+  margin-top: 1rem;
+}
+
+.cabinet-cost-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.cabinet-cost-item {
+  background: #2a2a2a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 0.75rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.cabinet-cost-item:hover {
+  background: #333;
+  border-color: #555;
+}
+
+.cabinet-cost-item.selected {
+  background: #1a4d1a;
+  border-color: #00ff00;
+}
+
+.cabinet-cost-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.cabinet-cost-number {
+  font-weight: bold;
+  color: #4da6ff;
+  font-size: 0.9rem;
+}
+
+.cabinet-cost-amount {
+  font-weight: 600;
+  color: #00ff00;
+  font-size: 1rem;
+}
+
+.cabinet-cost-details {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* Note */
+.cost-note {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #2a2a2a;
+  border-radius: 4px;
+  border-left: 3px solid #ff9800;
+}
+
+.cost-note p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #aaa;
+  line-height: 1.4;
+}
+
+/* Scrollbar styling */
+.cabinet-cost-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cabinet-cost-list::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 3px;
+}
+
+.cabinet-cost-list::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+
+.cabinet-cost-list::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}

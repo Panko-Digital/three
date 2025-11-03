@@ -1,25 +1,22 @@
-import type {
-  CabinetConfig,
-  DoorType,
-  HandleType,
-  CameraViewType,
-  RoomConfig,
-} from "../types";
+import type { CabinetConfig, DoorType, HandleType, RoomConfig } from "../types";
 import {
   DEFAULT_MATERIALS,
   HANDLE_COLORS,
   FLOOR_COLORS,
   WALL_COLORS,
 } from "../constants";
+import { CabinetList } from "./CabinetList";
+import { CostEstimator } from "./CostEstimator";
 import "./ControlPanel.css";
 
 interface ControlPanelProps {
+  cabinets: CabinetConfig[];
   selectedCabinet: CabinetConfig | null;
   onAddCabinet: () => void;
   onUpdateCabinet: (id: string, updates: Partial<CabinetConfig>) => void;
   onDeleteCabinet: (id: string) => void;
-  cameraView: CameraViewType;
-  onCameraViewChange: (view: CameraViewType) => void;
+  onDuplicateCabinet: (id: string) => void;
+  onSelectCabinet: (id: string) => void;
   snapToGrid: boolean;
   onSnapToGridChange: (snap: boolean) => void;
   gridSize: number;
@@ -28,12 +25,13 @@ interface ControlPanelProps {
 }
 
 export function ControlPanel({
+  cabinets,
   selectedCabinet,
   onAddCabinet,
   onUpdateCabinet,
   onDeleteCabinet,
-  cameraView,
-  onCameraViewChange,
+  onDuplicateCabinet,
+  onSelectCabinet,
   snapToGrid,
   onSnapToGridChange,
   gridSize,
@@ -92,6 +90,23 @@ export function ControlPanel({
     onUpdateCabinet(selectedCabinet.id, { position: newPosition });
   };
 
+  const handleRotate = (direction: "left" | "right") => {
+    if (!selectedCabinet) return;
+    const currentRotation = selectedCabinet.rotation || 0;
+    let newRotation = currentRotation;
+
+    if (direction === "left") {
+      newRotation = (currentRotation - 90) % 360;
+    } else {
+      newRotation = (currentRotation + 90) % 360;
+    }
+
+    // Normalize to 0-359 range
+    if (newRotation < 0) newRotation += 360;
+
+    onUpdateCabinet(selectedCabinet.id, { rotation: newRotation });
+  };
+
   return (
     <div className="control-panel">
       <div className="panel-section">
@@ -99,6 +114,41 @@ export function ControlPanel({
         <button onClick={onAddCabinet} className="btn-primary">
           + Add Cabinet
         </button>
+        {selectedCabinet && (
+          <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
+            <button
+              onClick={() => onDuplicateCabinet(selectedCabinet.id)}
+              className="btn-secondary"
+              style={{ flex: 1 }}
+            >
+              Duplicate
+            </button>
+            <button
+              onClick={() => onDeleteCabinet(selectedCabinet.id)}
+              className="btn-danger"
+              style={{ flex: 1 }}
+            >
+              Delete
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Cabinet List Section */}
+      <div className="panel-section">
+        <CabinetList
+          cabinets={cabinets}
+          selectedCabinetId={selectedCabinet?.id || null}
+          onSelectCabinet={onSelectCabinet}
+        />
+      </div>
+
+      {/* Cost Estimation Section */}
+      <div className="panel-section">
+        <CostEstimator
+          cabinets={cabinets}
+          selectedCabinetId={selectedCabinet?.id || null}
+        />
       </div>
 
       <div className="panel-section">
@@ -211,7 +261,7 @@ export function ControlPanel({
                   max="1"
                   step="0.05"
                   value={roomConfig.wallOpacity}
-                  onChange={(e) =>
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     onRoomConfigChange({
                       wallOpacity: parseFloat(e.target.value),
                     })
@@ -268,31 +318,6 @@ export function ControlPanel({
       </div>
 
       <div className="panel-section">
-        <h3>Camera View</h3>
-        <div className="button-grid">
-          {(
-            [
-              "free",
-              "front",
-              "back",
-              "left",
-              "right",
-              "top",
-              "isometric",
-            ] as CameraViewType[]
-          ).map((view) => (
-            <button
-              key={view}
-              onClick={() => onCameraViewChange(view)}
-              className={cameraView === view ? "btn-active" : "btn-secondary"}
-            >
-              {view.charAt(0).toUpperCase() + view.slice(1)}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="panel-section">
         <h3>Positioning</h3>
         <label className="checkbox-label">
           <input
@@ -312,16 +337,6 @@ export function ControlPanel({
 
       {selectedCabinet ? (
         <>
-          <div className="panel-section">
-            <h3>Selected Cabinet</h3>
-            <button
-              onClick={() => onDeleteCabinet(selectedCabinet.id)}
-              className="btn-danger"
-            >
-              Delete Cabinet
-            </button>
-          </div>
-
           <div className="panel-section">
             <h4>Position (m)</h4>
             <label>
@@ -363,6 +378,36 @@ export function ControlPanel({
                 }
               />
             </label>
+          </div>
+
+          <div className="panel-section">
+            <h4>Rotation</h4>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <button
+                onClick={() => handleRotate("left")}
+                className="btn-secondary"
+                style={{ flex: 1 }}
+              >
+                ↺ Rotate Left
+              </button>
+              <span
+                style={{
+                  fontSize: "1.2rem",
+                  fontWeight: "bold",
+                  minWidth: "45px",
+                  textAlign: "center",
+                }}
+              >
+                {selectedCabinet.rotation || 0}°
+              </span>
+              <button
+                onClick={() => handleRotate("right")}
+                className="btn-secondary"
+                style={{ flex: 1 }}
+              >
+                Rotate Right ↻
+              </button>
+            </div>
           </div>
 
           <div className="panel-section">

@@ -22,6 +22,7 @@ export interface DoorHandleConfig {
 export interface CabinetConfig {
     id: string;
     position: [number, number, number];
+    rotation: number; // Rotation in degrees (0, 90, 180, 270)
     width: number;
     height: number;
     depth: number;

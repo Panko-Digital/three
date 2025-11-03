@@ -3,6 +3,7 @@
   height: 100vh;
   margin: 0;
   padding: 0;
+  padding-top: 60px; /* Height of navbar */
   overflow: hidden;
   position: relative;
   background: #0a0a0a;

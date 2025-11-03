@@ -9,7 +9,7 @@ import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 interface KitchenSceneProps {
   cabinets: CabinetConfig[];
   selectedCabinetId: string | null;
-  onSelectCabinet: (id: string) => void;
+  onSelectCabinet: (id: string | null) => void;
   onPositionChange: (id: string, position: [number, number, number]) => void;
   cameraView: CameraViewType;
   snapToGrid: boolean;
@@ -112,8 +112,15 @@ function Scene({
       {/* Environment for reflections */}
       <Environment preset="apartment" />
 
-      {/* Room (Floor and Walls) */}
-      <Room config={roomConfig} />
+      {/* Room (Floor and Walls) - clicking on it deselects cabinets */}
+      <group
+        onClick={(e) => {
+          e.stopPropagation();
+          onSelectCabinet(null);
+        }}
+      >
+        <Room config={roomConfig} />
+      </group>
 
       {/* Cabinets */}
       {cabinets.map((cabinet) => (
@@ -142,7 +149,7 @@ function Scene({
 
 export function KitchenScene(props: KitchenSceneProps) {
   return (
-    <div style={{ width: "100%", height: "100vh" }}>
+    <div style={{ width: "100%", height: "calc(100vh - 60px)" }}>
       <Canvas
         camera={{ position: [3, 3, 3], fov: 50 }}
         shadows

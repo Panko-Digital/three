@@ -1,9 +1,9 @@
 .control-panel {
   position: fixed;
   right: 0;
-  top: 0;
+  top: 60px; /* Account for navbar height */
   width: 320px;
-  height: 100vh;
+  height: calc(100vh - 60px); /* Subtract navbar height */
   background: #1e1e1e;
   color: #ffffff;
   padding: 20px;

@@ -24,6 +24,7 @@ export function Cabinet({
   const { camera, gl } = useThree();
   const isDragging = useRef(false);
   const dragPlaneY = useRef(config.position[1]);
+  const hasCabinetBeenClicked = useRef(false);
 
   const snapToGridValue = useCallback(
     (value: number) => {
@@ -36,9 +37,9 @@ export function Cabinet({
   useEffect(() => {
     if (!groupRef.current || !isSelected) return;
 
-    const handlePointerDown = (event: PointerEvent) => {
+    const handlePointerDown = () => {
+      if (!hasCabinetBeenClicked.current) return; // Only drag if cabinet was clicked
       if (!groupRef.current) return;
-      event.stopPropagation();
       isDragging.current = true;
       dragPlaneY.current = config.position[1];
       gl.domElement.style.cursor = "move";
@@ -74,6 +75,7 @@ export function Cabinet({
 
     const handlePointerUp = () => {
       isDragging.current = false;
+      hasCabinetBeenClicked.current = false;
       gl.domElement.style.cursor = "auto";
     };
 
@@ -101,6 +103,7 @@ export function Cabinet({
 
   const {
     position,
+    rotation,
     width,
     height,
     depth,
@@ -114,7 +117,22 @@ export function Cabinet({
   const doorWidth = width / numberOfDoors;
 
   return (
-    <group ref={groupRef} position={position} onClick={onSelect}>
+    <group
+      ref={groupRef}
+      position={position}
+      rotation={[0, (rotation * Math.PI) / 180, 0]}
+      onClick={(e) => {
+        e.stopPropagation();
+        hasCabinetBeenClicked.current = true;
+        onSelect();
+      }}
+      onPointerDown={(e) => {
+        if (isSelected) {
+          e.stopPropagation();
+          hasCabinetBeenClicked.current = true;
+        }
+      }}
+    >
       {/* Cabinet body */}
       <mesh position={[0, height / 2, 0]}>
         <boxGeometry args={[width, height, depth]} />

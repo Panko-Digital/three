@@ -49,3 +49,59 @@ export const ROOM_DEFAULTS = {
     length: 5,   // 5m long
     height: 2.7, // 2.7m ceiling height (standard)
 };
+
+// Pricing Configuration (AUD)
+export const MATERIAL_PRICES = {
+    // Door/Body material prices per square meter
+    'white-gloss': 450,      // $450/m² - High gloss finish
+    'black-matt': 420,       // $420/m² - Matte finish
+    'oak': 380,              // $380/m² - Oak veneer
+    'walnut': 420,           // $420/m² - Walnut veneer
+    'grey': 350,             // $350/m² - Standard grey
+    'navy': 380,             // $380/m² - Navy painted finish
+    'sage': 370,             // $370/m² - Sage painted finish
+};
+
+export const HANDLE_PRICES = {
+    // Handle prices per unit
+    'bar': {
+        'chrome': 25,        // $25 per bar handle
+        'brass': 35,         // $35 per bar handle
+        'black': 28,         // $28 per bar handle
+        'gold': 45,          // $45 per bar handle
+    },
+    'knob': {
+        'chrome': 15,        // $15 per knob
+        'brass': 22,         // $22 per knob
+        'black': 18,         // $18 per knob
+        'gold': 30,          // $30 per knob
+    },
+    'edge': {
+        'chrome': 35,        // $35 per edge pull
+        'brass': 45,         // $45 per edge pull
+        'black': 38,         // $38 per edge pull
+        'gold': 55,          // $55 per edge pull
+    },
+    'none': {
+        'chrome': 0,
+        'brass': 0,
+        'black': 0,
+        'gold': 0,
+    },
+};
+
+export const CABINET_HARDWARE_COSTS = {
+    // Base hardware costs per cabinet
+    hinges: 45,              // $45 - 2 hinges per door
+    shelving: 60,            // $60 - Internal shelving
+    brackets: 35,            // $35 - Wall mounting brackets
+    screws: 15,              // $15 - Assorted screws and fixings
+    drawer_runners: 50,      // $50 - Soft-close drawer runners (if applicable)
+};
+
+// Door type multipliers (some door types require more hardware)
+export const DOOR_TYPE_MULTIPLIERS = {
+    'swing': 1.0,           // Standard swing doors
+    'sliding': 1.3,         // Sliding mechanism adds 30%
+    'folding': 1.5,         // Folding mechanism adds 50%
+};

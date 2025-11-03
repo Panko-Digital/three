@@ -1,0 +1,128 @@
+.cabinet-list {
+  background: #1e1e1e;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.cabinet-list h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: #e0e0e0;
+}
+
+.empty-state {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.cabinet-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.cabinet-item {
+  background: #2a2a2a;
+  border: 2px solid #333;
+  border-radius: 6px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cabinet-item:hover {
+  background: #333;
+  border-color: #555;
+}
+
+.cabinet-item.selected {
+  background: #1a4d1a;
+  border-color: #00ff00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.cabinet-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.cabinet-number {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #4da6ff;
+}
+
+.cabinet-type {
+  font-size: 0.85rem;
+  color: #aaa;
+  text-transform: capitalize;
+}
+
+.cabinet-dimensions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.dimension {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.dimension-label {
+  font-size: 0.75rem;
+  color: #888;
+  font-weight: bold;
+}
+
+.dimension-value {
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+.cabinet-position {
+  font-size: 0.75rem;
+  color: #888;
+  margin-bottom: 0.25rem;
+}
+
+.cabinet-doors {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.cabinet-list-note {
+  font-size: 0.75rem;
+  color: #888;
+  margin: 0.75rem 0 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid #333;
+  font-style: italic;
+}
+
+/* Scrollbar styling for cabinet list */
+.cabinet-list-items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cabinet-list-items::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 3px;
+}
+
+.cabinet-list-items::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+
+.cabinet-list-items::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
