@@ -21,7 +21,7 @@
 /* Summary Section */
 .cost-summary {
   background: linear-gradient(135deg, #2a5c2a 0%, #1a4d1a 100%);
-  padding: 1rem;
+  padding: 0.5em;
   border-radius: 6px;
   margin-bottom: 1rem;
   border: 1px solid #00ff00;

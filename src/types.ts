@@ -3,6 +3,7 @@ import { Vector3 } from 'three';
 export type DoorType = 'swing' | 'sliding' | 'folding';
 export type HandleType = 'bar' | 'knob' | 'edge' | 'none';
 export type CameraViewType = 'free' | 'front' | 'back' | 'left' | 'right' | 'top' | 'isometric';
+export type ItemType = 'cabinet' | 'benchtop';
 
 export interface MaterialConfig {
     id: string;
@@ -31,6 +32,17 @@ export interface CabinetConfig {
     doorType: DoorType;
     handle: DoorHandleConfig;
     numberOfDoors: number;
+}
+
+export interface BenchtopConfig {
+    id: string;
+    position: [number, number, number];
+    rotation: number; // Rotation in degrees (0, 90, 180, 270)
+    width: number;
+    depth: number;
+    thickness: number;
+    material: MaterialConfig;
+    overhang: number; // How much it overhangs the cabinet edges
 }
 
 export interface KitchenConfig {

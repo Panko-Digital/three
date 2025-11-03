@@ -37,7 +37,7 @@ export function CostEstimator({
       {/* Project Total Summary */}
       <div className="cost-summary">
         <div className="cost-summary-row total">
-          <span className="cost-label">Total Project Cost</span>
+          <span className="cost-label">Project Total</span>
           <span className="cost-value">
             {formatAUD(projectCost.cabinetsTotal)}
           </span>

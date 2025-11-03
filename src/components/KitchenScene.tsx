@@ -1,15 +1,24 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
 import { Cabinet } from "./Cabinet";
+import { Benchtop } from "./Benchtop";
 import { Room } from "./Room";
-import type { CabinetConfig, CameraViewType, RoomConfig } from "../types";
+import type {
+  CabinetConfig,
+  BenchtopConfig,
+  CameraViewType,
+  RoomConfig,
+  ItemType,
+} from "../types";
 import { useEffect, useRef, useState } from "react";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 interface KitchenSceneProps {
   cabinets: CabinetConfig[];
+  benchtops: BenchtopConfig[];
   selectedCabinetId: string | null;
-  onSelectCabinet: (id: string | null) => void;
+  selectedBenchtopId: string | null;
+  onSelectItem: (id: string | null, type: ItemType | null) => void;
   onPositionChange: (id: string, position: [number, number, number]) => void;
   cameraView: CameraViewType;
   snapToGrid: boolean;
@@ -32,8 +41,10 @@ const CAMERA_POSITIONS: Record<
 
 function Scene({
   cabinets,
+  benchtops,
   selectedCabinetId,
-  onSelectCabinet,
+  selectedBenchtopId,
+  onSelectItem,
   onPositionChange,
   cameraView,
   snapToGrid,
@@ -43,15 +54,19 @@ function Scene({
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const [isDraggingCabinet, setIsDraggingCabinet] = useState(false);
 
-  // Keyboard controls for moving selected cabinet
+  // Keyboard controls for moving selected cabinet or benchtop
   useEffect(() => {
-    if (!selectedCabinetId) return;
+    const selectedId = selectedCabinetId || selectedBenchtopId;
+    if (!selectedId) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      const selectedCabinet = cabinets.find((c) => c.id === selectedCabinetId);
-      if (!selectedCabinet) return;
+      const selectedCabinet = cabinets.find((c) => c.id === selectedId);
+      const selectedBenchtop = benchtops.find((b) => b.id === selectedId);
+      const selectedItem = selectedCabinet || selectedBenchtop;
 
-      const [x, y, z] = selectedCabinet.position;
+      if (!selectedItem) return;
+
+      const [x, y, z] = selectedItem.position;
       const step = event.shiftKey ? 0.01 : snapToGrid ? gridSize : 0.1;
       let newPos: [number, number, number] = [x, y, z];
 
@@ -82,14 +97,22 @@ function Scene({
           break;
       }
 
-      if (newPos !== selectedCabinet.position) {
-        onPositionChange(selectedCabinetId, newPos);
+      if (newPos !== selectedItem.position) {
+        onPositionChange(selectedId, newPos);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedCabinetId, cabinets, snapToGrid, gridSize, onPositionChange]);
+  }, [
+    selectedCabinetId,
+    selectedBenchtopId,
+    cabinets,
+    benchtops,
+    snapToGrid,
+    gridSize,
+    onPositionChange,
+  ]);
 
   useEffect(() => {
     if (controlsRef.current && cameraView !== "free") {
@@ -117,7 +140,7 @@ function Scene({
       <group
         onClick={(e) => {
           e.stopPropagation();
-          onSelectCabinet(null);
+          onSelectItem(null, null);
         }}
       >
         <Room config={roomConfig} />
@@ -129,7 +152,21 @@ function Scene({
           key={cabinet.id}
           config={cabinet}
           isSelected={cabinet.id === selectedCabinetId}
-          onSelect={() => onSelectCabinet(cabinet.id)}
+          onSelect={() => onSelectItem(cabinet.id, "cabinet")}
+          onPositionChange={onPositionChange}
+          onDragStateChange={setIsDraggingCabinet}
+          snapToGrid={snapToGrid}
+          gridSize={gridSize}
+        />
+      ))}
+
+      {/* Benchtops */}
+      {benchtops.map((benchtop) => (
+        <Benchtop
+          key={benchtop.id}
+          config={benchtop}
+          isSelected={benchtop.id === selectedBenchtopId}
+          onSelect={() => onSelectItem(benchtop.id, "benchtop")}
           onPositionChange={onPositionChange}
           onDragStateChange={setIsDraggingCabinet}
           snapToGrid={snapToGrid}
