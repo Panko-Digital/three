@@ -255,66 +255,6 @@ export function ControlPanel({
         )}
       </div>
 
-      {/* Item List Accordion */}
-      <div className="panel-section">
-        <div className="accordion-header" onClick={() => toggleSection("list")}>
-          <h3>Items ({cabinets.length + benchtops.length})</h3>
-          <span className="accordion-icon">
-            {openSections.list ? "▼" : "▶"}
-          </span>
-        </div>
-        {openSections.list && (
-          <div className="accordion-content">
-            <CabinetList
-              cabinets={cabinets}
-              selectedCabinetId={selectedCabinet?.id || null}
-              onSelectCabinet={(id) => onSelectItem(id, "cabinet")}
-            />
-            {benchtops.length > 0 && (
-              <>
-                <h4 style={{ marginTop: "1rem", marginBottom: "0.5rem" }}>
-                  Benchtops
-                </h4>
-                <div className="cabinet-list">
-                  {benchtops.map((benchtop) => (
-                    <div
-                      key={benchtop.id}
-                      className={`cabinet-item ${
-                        selectedBenchtop?.id === benchtop.id ? "selected" : ""
-                      }`}
-                      onClick={() => onSelectItem(benchtop.id, "benchtop")}
-                    >
-                      <span>{benchtop.material.name}</span>
-                      <span className="cabinet-size">
-                        {benchtop.width.toFixed(1)}×{benchtop.depth.toFixed(1)}m
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Cost Estimator Accordion */}
-      <div className="panel-section">
-        <div className="accordion-header" onClick={() => toggleSection("cost")}>
-          <h3>Cost Estimate</h3>
-          <span className="accordion-icon">
-            {openSections.cost ? "▼" : "▶"}
-          </span>
-        </div>
-        {openSections.cost && (
-          <div className="accordion-content">
-            <CostEstimator
-              cabinets={cabinets}
-              selectedCabinetId={selectedCabinet?.id || null}
-            />
-          </div>
-        )}
-      </div>
-
       {/* Room Setup Accordion */}
       <div className="panel-section">
         <div className="accordion-header" onClick={() => toggleSection("room")}>
@@ -514,6 +454,48 @@ export function ControlPanel({
         )}
       </div>
 
+      {/* Item List Accordion */}
+      <div className="panel-section">
+        <div className="accordion-header" onClick={() => toggleSection("list")}>
+          <h3>Items ({cabinets.length + benchtops.length})</h3>
+          <span className="accordion-icon">
+            {openSections.list ? "▼" : "▶"}
+          </span>
+        </div>
+        {openSections.list && (
+          <div className="accordion-content">
+            <CabinetList
+              cabinets={cabinets}
+              selectedCabinetId={selectedCabinet?.id || null}
+              onSelectCabinet={(id) => onSelectItem(id, "cabinet")}
+            />
+            {benchtops.length > 0 && (
+              <>
+                <h4 style={{ marginTop: "1rem", marginBottom: "0.5rem" }}>
+                  Benchtops
+                </h4>
+                <div className="cabinet-list">
+                  {benchtops.map((benchtop) => (
+                    <div
+                      key={benchtop.id}
+                      className={`cabinet-item ${
+                        selectedBenchtop?.id === benchtop.id ? "selected" : ""
+                      }`}
+                      onClick={() => onSelectItem(benchtop.id, "benchtop")}
+                    >
+                      <span>{benchtop.material.name}</span>
+                      <span className="cabinet-size">
+                        {benchtop.width.toFixed(1)}×{benchtop.depth.toFixed(1)}m
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+
       {/* Item Details Accordion - Cabinet or Benchtop */}
       {(selectedCabinet || selectedBenchtop) && (
         <div className="panel-section">
@@ -532,6 +514,59 @@ export function ControlPanel({
             <div className="accordion-content">
               {selectedItemType === "cabinet" && selectedCabinet && (
                 <>
+                  {/* Dimensions */}
+                  <div className="panel-section">
+                    <h4>Dimensions</h4>
+                    <label>
+                      Width: {selectedCabinet.width.toFixed(2)}m
+                      <input
+                        type="range"
+                        min="0.3"
+                        max="2.0"
+                        step="0.1"
+                        value={selectedCabinet.width}
+                        onChange={(e) =>
+                          handleDimensionChange(
+                            "width",
+                            parseFloat(e.target.value)
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      Height: {selectedCabinet.height.toFixed(2)}m
+                      <input
+                        type="range"
+                        min="0.5"
+                        max="2.5"
+                        step="0.1"
+                        value={selectedCabinet.height}
+                        onChange={(e) =>
+                          handleDimensionChange(
+                            "height",
+                            parseFloat(e.target.value)
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      Depth: {selectedCabinet.depth.toFixed(2)}m
+                      <input
+                        type="range"
+                        min="0.3"
+                        max="0.8"
+                        step="0.05"
+                        value={selectedCabinet.depth}
+                        onChange={(e) =>
+                          handleDimensionChange(
+                            "depth",
+                            parseFloat(e.target.value)
+                          )
+                        }
+                      />
+                    </label>
+                  </div>
+                  
                   {/* Position Controls */}
                   <div className="panel-section">
                     <h4>Position (m)</h4>
@@ -611,59 +646,6 @@ export function ControlPanel({
                         Rotate Right ↻
                       </button>
                     </div>
-                  </div>
-
-                  {/* Dimensions */}
-                  <div className="panel-section">
-                    <h4>Dimensions</h4>
-                    <label>
-                      Width: {selectedCabinet.width.toFixed(2)}m
-                      <input
-                        type="range"
-                        min="0.3"
-                        max="2.0"
-                        step="0.1"
-                        value={selectedCabinet.width}
-                        onChange={(e) =>
-                          handleDimensionChange(
-                            "width",
-                            parseFloat(e.target.value)
-                          )
-                        }
-                      />
-                    </label>
-                    <label>
-                      Height: {selectedCabinet.height.toFixed(2)}m
-                      <input
-                        type="range"
-                        min="0.5"
-                        max="2.5"
-                        step="0.1"
-                        value={selectedCabinet.height}
-                        onChange={(e) =>
-                          handleDimensionChange(
-                            "height",
-                            parseFloat(e.target.value)
-                          )
-                        }
-                      />
-                    </label>
-                    <label>
-                      Depth: {selectedCabinet.depth.toFixed(2)}m
-                      <input
-                        type="range"
-                        min="0.3"
-                        max="0.8"
-                        step="0.05"
-                        value={selectedCabinet.depth}
-                        onChange={(e) =>
-                          handleDimensionChange(
-                            "depth",
-                            parseFloat(e.target.value)
-                          )
-                        }
-                      />
-                    </label>
                   </div>
 
                   {/* Number of Doors */}
@@ -978,6 +960,24 @@ export function ControlPanel({
           )}
         </div>
       )}
+
+      {/* Cost Estimator Accordion */}
+      <div className="panel-section">
+        <div className="accordion-header" onClick={() => toggleSection("cost")}>
+          <h3>Cost Estimate</h3>
+          <span className="accordion-icon">
+            {openSections.cost ? "▼" : "▶"}
+          </span>
+        </div>
+        {openSections.cost && (
+          <div className="accordion-content">
+            <CostEstimator
+              cabinets={cabinets}
+              selectedCabinetId={selectedCabinet?.id || null}
+            />
+          </div>
+        )}
+      </div>
 
       {/* No Selection Message */}
       {!selectedCabinet && !selectedBenchtop && (

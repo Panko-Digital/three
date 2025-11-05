@@ -43,7 +43,7 @@ function App() {
     floorColor: FLOOR_COLORS[0].color,
     wallColor: WALL_COLORS[0].color,
     showWalls: true,
-    showNorthWall: true,
+    showNorthWall: false,
     showSouthWall: true,
     showEastWall: true,
     showWestWall: true,
