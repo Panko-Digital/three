@@ -12,6 +12,7 @@ interface CabinetProps {
   onDragStateChange?: (isDragging: boolean) => void;
   snapToGrid: boolean;
   gridSize: number;
+  showShadows: boolean;
 }
 export function Cabinet({
   config,
@@ -21,6 +22,7 @@ export function Cabinet({
   onDragStateChange,
   snapToGrid,
   gridSize,
+  showShadows,
 }: CabinetProps) {
   const groupRef = useRef<Group>(null);
   const { camera, gl } = useThree();
@@ -139,7 +141,11 @@ export function Cabinet({
       }}
     >
       {/* Cabinet body */}
-      <mesh position={[0, height / 2, 0]}>
+      <mesh
+        position={[0, height / 2, 0]}
+        castShadow={showShadows}
+        receiveShadow={showShadows}
+      >
         <boxGeometry args={[width, height, depth]} />
         <meshStandardMaterial
           color={bodyMaterial.color}
@@ -164,7 +170,7 @@ export function Cabinet({
         return (
           <group key={i} position={[doorX, height / 2, doorZ]}>
             {/* Door panel */}
-            <mesh>
+            <mesh castShadow={showShadows} receiveShadow={showShadows}>
               <boxGeometry args={[doorWidth - 0.01, height - 0.04, 0.02]} />
               <meshStandardMaterial
                 color={doorMaterial.color}
@@ -175,7 +181,10 @@ export function Cabinet({
 
             {/* Door handle */}
             {handle.type === "bar" && (
-              <mesh position={[doorWidth / 3, 0, 0.02]}>
+              <mesh
+                position={[doorWidth / 3, 0, 0.02]}
+                castShadow={showShadows}
+              >
                 <boxGeometry args={[0.02, height * 0.3, 0.02]} />
                 <meshStandardMaterial
                   color={handle.color}
@@ -185,7 +194,10 @@ export function Cabinet({
               </mesh>
             )}
             {handle.type === "knob" && (
-              <mesh position={[doorWidth / 3, 0, 0.03]}>
+              <mesh
+                position={[doorWidth / 3, 0, 0.03]}
+                castShadow={showShadows}
+              >
                 <sphereGeometry args={[0.02, 16, 16]} />
                 <meshStandardMaterial
                   color={handle.color}
@@ -195,7 +207,10 @@ export function Cabinet({
               </mesh>
             )}
             {handle.type === "edge" && (
-              <mesh position={[doorWidth / 2 - 0.02, 0, 0]}>
+              <mesh
+                position={[doorWidth / 2 - 0.02, 0, 0]}
+                castShadow={showShadows}
+              >
                 <boxGeometry args={[0.03, height * 0.4, 0.03]} />
                 <meshStandardMaterial
                   color={handle.color}

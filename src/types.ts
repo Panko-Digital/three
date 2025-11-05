@@ -63,6 +63,7 @@ export interface RoomConfig {
     showSouthWall: boolean;
     showEastWall: boolean;
     showWestWall: boolean;
+    showShadows: boolean;
 }
 
 export interface CameraView {

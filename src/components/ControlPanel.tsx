@@ -330,6 +330,17 @@ export function ControlPanel({
               </select>
             </div>
 
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={roomConfig.showShadows}
+                onChange={(e) =>
+                  onRoomConfigChange({ showShadows: e.target.checked })
+                }
+              />
+              <span>Show Shadows</span>
+            </label>
+
             <div className="wall-controls">
               <label className="checkbox-label">
                 <input
@@ -566,7 +577,7 @@ export function ControlPanel({
                       />
                     </label>
                   </div>
-                  
+
                   {/* Position Controls */}
                   <div className="panel-section">
                     <h4>Position (m)</h4>

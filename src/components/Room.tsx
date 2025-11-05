@@ -19,6 +19,7 @@ export function Room({ config }: RoomProps) {
     showSouthWall,
     showEastWall,
     showWestWall,
+    showShadows,
   } = config;
 
   const halfWidth = width / 2;
@@ -28,7 +29,11 @@ export function Room({ config }: RoomProps) {
   return (
     <group>
       {/* Floor */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, 0, 0]}
+        receiveShadow={showShadows}
+      >
         <planeGeometry args={[width, length]} />
         <meshStandardMaterial
           color={floorColor}
@@ -58,8 +63,8 @@ export function Room({ config }: RoomProps) {
             <>
               <mesh
                 position={[0, halfHeight, halfLength]}
-                castShadow
-                receiveShadow
+                castShadow={showShadows}
+                receiveShadow={showShadows}
               >
                 <planeGeometry args={[width, height]} />
                 <meshStandardMaterial
@@ -92,8 +97,8 @@ export function Room({ config }: RoomProps) {
               <mesh
                 position={[0, halfHeight, -halfLength]}
                 rotation={[0, Math.PI, 0]}
-                castShadow
-                receiveShadow
+                castShadow={showShadows}
+                receiveShadow={showShadows}
               >
                 <planeGeometry args={[width, height]} />
                 <meshStandardMaterial
@@ -126,8 +131,8 @@ export function Room({ config }: RoomProps) {
               <mesh
                 position={[halfWidth, halfHeight, 0]}
                 rotation={[0, -Math.PI / 2, 0]}
-                castShadow
-                receiveShadow
+                castShadow={showShadows}
+                receiveShadow={showShadows}
               >
                 <planeGeometry args={[length, height]} />
                 <meshStandardMaterial
@@ -160,8 +165,8 @@ export function Room({ config }: RoomProps) {
               <mesh
                 position={[-halfWidth, halfHeight, 0]}
                 rotation={[0, Math.PI / 2, 0]}
-                castShadow
-                receiveShadow
+                castShadow={showShadows}
+                receiveShadow={showShadows}
               >
                 <planeGeometry args={[length, height]} />
                 <meshStandardMaterial

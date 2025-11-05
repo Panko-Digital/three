@@ -12,6 +12,7 @@ interface BenchtopProps {
   onDragStateChange?: (isDragging: boolean) => void;
   snapToGrid: boolean;
   gridSize: number;
+  showShadows: boolean;
 }
 
 export function Benchtop({
@@ -22,6 +23,7 @@ export function Benchtop({
   onDragStateChange,
   snapToGrid,
   gridSize,
+  showShadows,
 }: BenchtopProps) {
   const groupRef = useRef<Group>(null);
   const { camera, gl } = useThree();
@@ -124,7 +126,11 @@ export function Benchtop({
       }}
     >
       {/* Benchtop surface */}
-      <mesh position={[0, thickness / 2, 0]}>
+      <mesh
+        position={[0, thickness / 2, 0]}
+        castShadow={showShadows}
+        receiveShadow={showShadows}
+      >
         <boxGeometry
           args={[width + overhang * 2, thickness, depth + overhang * 2]}
         />
@@ -150,7 +156,10 @@ export function Benchtop({
       )}
 
       {/* Edge detail - slight bevel on front edge */}
-      <mesh position={[0, thickness / 2, (depth + overhang * 2) / 2]}>
+      <mesh
+        position={[0, thickness / 2, (depth + overhang * 2) / 2]}
+        castShadow={showShadows}
+      >
         <boxGeometry args={[width + overhang * 2, thickness * 0.8, 0.01]} />
         <meshStandardMaterial
           color={material.color}

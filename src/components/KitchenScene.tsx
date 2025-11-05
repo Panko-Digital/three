@@ -157,6 +157,7 @@ function Scene({
           onDragStateChange={setIsDraggingCabinet}
           snapToGrid={snapToGrid}
           gridSize={gridSize}
+          showShadows={roomConfig.showShadows}
         />
       ))}
 
@@ -171,6 +172,7 @@ function Scene({
           onDragStateChange={setIsDraggingCabinet}
           snapToGrid={snapToGrid}
           gridSize={gridSize}
+          showShadows={roomConfig.showShadows}
         />
       ))}
 

@@ -48,6 +48,7 @@ function App() {
     showEastWall: true,
     showWestWall: true,
     wallOpacity: 1.0,
+    showShadows: true,
   });
 
   const handleAddCabinet = () => {
