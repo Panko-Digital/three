@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 
 export interface Snapshot<T> {
     data: T;
@@ -35,7 +35,11 @@ export function useHistory<T>(maxSize = 100) {
     const undo = useCallback(
         (current: T): T | null => {
             if (pastRef.current.length < 2) return null;
-            const present = pastRef.current.pop()!;
+            if (debounceTimerRef.current) {
+                clearTimeout(debounceTimerRef.current);
+                debounceTimerRef.current = null;
+            }
+            pastRef.current.pop();
             futureRef.current.push({ data: structuredClone(current), timestamp: Date.now() });
             const prev = pastRef.current[pastRef.current.length - 1];
             return structuredClone(prev.data);
@@ -46,6 +50,10 @@ export function useHistory<T>(maxSize = 100) {
     const redo = useCallback(
         (): T | null => {
             if (futureRef.current.length === 0) return null;
+            if (debounceTimerRef.current) {
+                clearTimeout(debounceTimerRef.current);
+                debounceTimerRef.current = null;
+            }
             const next = futureRef.current.pop()!;
             pastRef.current.push({ data: structuredClone(next.data), timestamp: Date.now() });
             return structuredClone(next.data);
@@ -56,5 +64,8 @@ export function useHistory<T>(maxSize = 100) {
     const canUndo = useCallback(() => pastRef.current.length >= 2, []);
     const canRedo = useCallback(() => futureRef.current.length > 0, []);
 
-    return { pushState, undo, redo, canUndo, canRedo };
+    return useMemo(
+        () => ({ pushState, undo, redo, canUndo, canRedo }),
+        [pushState, undo, redo, canUndo, canRedo],
+    );
 }
