@@ -1,16 +1,74 @@
-import type { CameraViewType } from "../types";
+import { Undo2, Redo2 } from "lucide-react";
+import type { CameraViewType, KitchenDesignFile } from "../types";
 import "./NavBar.css";
 
 interface NavBarProps {
   cameraView: CameraViewType;
   onCameraViewChange: (view: CameraViewType) => void;
+  onExport: () => void;
+  onImport: (data: KitchenDesignFile) => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
-export function NavBar({ cameraView, onCameraViewChange }: NavBarProps) {
+export function NavBar({
+  cameraView,
+  onCameraViewChange,
+  onExport,
+  onImport,
+  onUndo,
+  onRedo,
+  canUndo,
+  canRedo,
+}: NavBarProps) {
+  const handleImportClick = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const data = JSON.parse(ev.target?.result as string);
+          onImport(data);
+        } catch {
+          alert("Invalid design file.");
+        }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  };
+
   return (
     <nav className="nav-bar">
       <div className="nav-logo">
-        <h1>Designer</h1>
+        <h1>Kitchen Designer - Panko</h1>
+      </div>
+
+      <div className="nav-history">
+        <button
+          className="nav-btn nav-btn-history"
+          onClick={onUndo}
+          disabled={!canUndo}
+          title="Undo (Ctrl+Z)"
+          aria-label="Undo"
+        >
+          <Undo2 size={18} />
+        </button>
+        <button
+          className="nav-btn nav-btn-history"
+          onClick={onRedo}
+          disabled={!canRedo}
+          title="Redo (Ctrl+Shift+Z)"
+          aria-label="Redo"
+        >
+          <Redo2 size={18} />
+        </button>
       </div>
 
       <div className="nav-views">
@@ -38,6 +96,15 @@ export function NavBar({ cameraView, onCameraViewChange }: NavBarProps) {
             </button>
           ))}
         </div>
+      </div>
+
+      <div className="nav-actions">
+        <button className="nav-btn nav-btn-export" onClick={onExport}>
+          ⬇ Export
+        </button>
+        <button className="nav-btn nav-btn-import" onClick={handleImportClick}>
+          ⬆ Import
+        </button>
       </div>
     </nav>
   );
