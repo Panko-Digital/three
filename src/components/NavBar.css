@@ -135,7 +135,7 @@
   border-color: #eee;
 }
 
-d .nav-btn-export:hover {
+.nav-btn-export:hover {
   background: #ddd;
   border-color: #000;
 }

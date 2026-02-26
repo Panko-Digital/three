@@ -62,7 +62,7 @@ function App() {
 
   // --- History (undo/redo) ---
   const history = useHistory<KitchenState>();
-  const [historyTick, setHistoryTick] = useState(0); // forces re-render for canUndo/canRedo
+  const [, setHistoryTick] = useState(0); // forces re-render for canUndo/canRedo
 
   const getState = useCallback(
     (): KitchenState => ({ cabinets, benchtops, roomConfig }),
@@ -76,8 +76,7 @@ function App() {
       benchtops: [],
       roomConfig: initialRoomConfig,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [history.pushState]);
 
   const pushHistory = useCallback(
     (state: KitchenState, debounceMs = 0) => {
