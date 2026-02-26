@@ -71,3 +71,12 @@ export interface CameraView {
     target: Vector3;
     name: CameraViewType;
 }
+
+export interface KitchenDesignFile {
+    version: string;
+    exportedAt: string;
+    roomConfig: RoomConfig;
+    cabinets: CabinetConfig[];
+    benchtops: BenchtopConfig[];
+}
+
